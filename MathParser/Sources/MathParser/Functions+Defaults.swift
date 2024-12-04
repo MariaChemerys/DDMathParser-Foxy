@@ -206,9 +206,16 @@ extension Function {
     })
     
     public static let ln = Function(name: "ln", evaluator: { state throws -> Double in
-        guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+        guard state.arguments.count == 1 else {
+            throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
+        }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+
+        guard arg1 > 0 else {
+            throw MathParserError(kind: .unknownOperator, range: state.expressionRange)
+        }
+        
         return Darwin.log(arg1)
     })
     
