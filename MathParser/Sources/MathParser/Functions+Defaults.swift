@@ -202,6 +202,11 @@ extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        
+        guard arg1 > 0 else {
+            throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+        }
+        
         return Darwin.log10(arg1)
     })
     
@@ -223,6 +228,11 @@ extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        
+        guard arg1 > 0 else {
+            throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+        }
+        
         return Darwin.log2(arg1)
     })
     
