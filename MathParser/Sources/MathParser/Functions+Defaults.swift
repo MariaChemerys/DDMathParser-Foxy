@@ -213,7 +213,7 @@ extension Function {
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
 
         guard arg1 > 0 else {
-            throw MathParserError(kind: .unknownOperator, range: state.expressionRange)
+            throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
         }
         
         return Darwin.log(arg1)

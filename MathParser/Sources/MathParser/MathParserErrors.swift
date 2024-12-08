@@ -44,6 +44,7 @@ public struct MathParserError: Error {
         case unknownVariable(String)
         case divideByZero
         case invalidArguments
+        case argumentOutOfRange
     }
     
     public let kind: Kind
@@ -92,6 +93,7 @@ public func ==(lhs: MathParserError.Kind, rhs: MathParserError.Kind) -> Bool {
         case (.unknownVariable(let leftString), .unknownVariable(let rightString)): return leftString == rightString
         case (.divideByZero, .divideByZero): return true
         case (.invalidArguments, .invalidArguments): return true
+        case (.argumentOutOfRange, .argumentOutOfRange): return true
         
         default: return false
     }
