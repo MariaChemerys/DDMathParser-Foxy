@@ -38,14 +38,25 @@ public struct ExpressionRewriter {
                     tmp = rewritten
                 }
             }
-        
+            
+            do {
+                let result = try evaluator.evaluate(tmp)
+                if result.isNaN {
+                    NSLog("Rewriting stopped: Expression evaluated to NaN")
+                    break
+                }
+            } catch {
+                NSLog("Error during evaluation: \(error)")
+                break
+            }
+            
             if changed == false { break }
             iterationCount += 1
             
         } while iterationCount < maxIterationCount
         
         if iterationCount >= maxIterationCount {
-            NSLog("replacement limit reached")
+            NSLog("Replacement limit reached")
         }
         
         return tmp
@@ -62,7 +73,7 @@ public struct ExpressionRewriter {
         
         let newArgs = args.map { rewrite($0, usingRule: rule, substitutions: substitutions, evaluator: evaluator) }
         
-        // if nothing changed, reture
+        // if nothing changed, return
         guard args != newArgs else { return rewritten }
         
         return Expression(kind: .function(f, newArgs), range: rewritten.range)
