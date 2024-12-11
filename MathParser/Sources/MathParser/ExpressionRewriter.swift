@@ -23,7 +23,7 @@ public struct ExpressionRewriter {
         rules.append(rule)
     }
     
-    public func rewriteExpression(_ expression: Expression, substitutions: Substitutions = [:], evaluator: Evaluator = Evaluator.default) throws -> Expression {
+    public func rewriteExpression(_ expression: Expression, substitutions: Substitutions = [:], evaluator: Evaluator = Evaluator.default) -> Expression? {
         
         var tmp = expression
         var iterationCount: UInt = 0
@@ -43,7 +43,7 @@ public struct ExpressionRewriter {
                 _ = try evaluator.evaluate(tmp)
             } catch {
                 NSLog("Error during evaluation in ExpressionRewriter: \(error)")
-                throw MathParserError(kind: .expressionRewriterError, range: 0..<10)
+                return nil
             }
             
             if changed == false { break }

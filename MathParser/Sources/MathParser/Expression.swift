@@ -90,7 +90,7 @@ public final class Expression {
         }
     }
     
-    public func rewrite(_ substitutions: Substitutions = [:], rewriter: ExpressionRewriter = .default, evaluator: Evaluator = .default) -> Expression {
+    public func rewrite(_ substitutions: Substitutions = [:], rewriter: ExpressionRewriter = .default, evaluator: Evaluator = .default) -> Expression? {
         return rewriter.rewriteExpression(self, substitutions: substitutions, evaluator: evaluator)
     }
 }
