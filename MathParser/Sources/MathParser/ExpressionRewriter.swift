@@ -25,13 +25,6 @@ public struct ExpressionRewriter {
     
     public func rewriteExpression(_ expression: Expression, substitutions: Substitutions = [:], evaluator: Evaluator = Evaluator.default) -> Expression? {
         
-        do {
-            _ = try evaluator.evaluate(expression)
-        } catch {
-            NSLog("Error during evaluation in ExpressionRewriter: \(error)")
-            return nil
-        }
-        
         var tmp = expression
         var iterationCount: UInt = 0
         
@@ -40,6 +33,14 @@ public struct ExpressionRewriter {
             
             for rule in rules {
                 let rewritten = rewrite(tmp, usingRule: rule, substitutions: substitutions, evaluator: evaluator)
+                
+                do {
+                    _ = try evaluator.evaluate(rewritten)
+                } catch {
+                    NSLog("Error during evaluation in ExpressionRewriter: \(error)")
+                    return nil
+                }
+                
                 if rewritten != tmp {
                     changed = true
                     tmp = rewritten
