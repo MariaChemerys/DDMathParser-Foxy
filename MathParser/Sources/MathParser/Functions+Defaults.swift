@@ -198,7 +198,7 @@ extension Function {
         return drand48() * range + lowerBound
     })
     
-    public static let log = Function(name: "log", evaluator: { state throws -> Double in
+    public static let log = Function(names: ["log", "log10"], evaluator: { state throws -> Double in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
