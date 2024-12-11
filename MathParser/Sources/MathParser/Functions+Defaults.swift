@@ -503,7 +503,7 @@ extension Function {
         return 1.0 / sinArg
     })
     
-    public static let cotan = Function(name: "cotan", evaluator: { state throws -> Double in
+    public static let cotan = Function(names: ["cotan", "cot"], evaluator: { state throws -> Double in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
@@ -528,7 +528,7 @@ extension Function {
         return Function._rtod(Darwin.acos(1.0 / arg1), evaluator: state.evaluator)
     })
     
-    public static let acotan = Function(names: ["acotan", "cotan⁻¹"], evaluator: { state throws -> Double in
+    public static let acotan = Function(names: ["acotan", "acot", "cotan⁻¹", "cot⁻¹"], evaluator: { state throws -> Double in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
