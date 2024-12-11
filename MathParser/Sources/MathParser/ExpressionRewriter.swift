@@ -42,8 +42,7 @@ public struct ExpressionRewriter {
             do {
                 _ = try evaluator.evaluate(tmp)
             } catch {
-//                NSLog("Error during evaluation in ExpressionRewriter: \(error)")
-                fatalError("Error during evaluation of Expression in ExpressionRewriter: \(error.localizedDescription)")
+                NSLog("Error during evaluation in ExpressionRewriter: \(error)")
                 break
             }
             
