@@ -40,13 +40,10 @@ public struct ExpressionRewriter {
             }
             
             do {
-                let result = try evaluator.evaluate(tmp)
-                if result.isNaN {
-                    NSLog("Rewriting stopped: Expression evaluated to NaN")
-                    break
-                }
+                _ = try evaluator.evaluate(tmp)
             } catch {
-                NSLog("Error during evaluation: \(error)")
+//                NSLog("Error during evaluation in ExpressionRewriter: \(error)")
+                fatalError("Error during evaluation of Expression in ExpressionRewriter: \(error.localizedDescription)")
                 break
             }
             

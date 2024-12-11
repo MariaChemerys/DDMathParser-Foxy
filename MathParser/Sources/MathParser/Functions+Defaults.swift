@@ -204,8 +204,8 @@ extension Function {
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         
         guard arg1 > 0 else {
-            //throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
-            return Double.nan
+            throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+//            return Double.nan
         }
         
         return Darwin.log10(arg1)
