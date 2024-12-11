@@ -39,6 +39,9 @@ public struct MathParserError: Error {
         case missingLeftOperand(Operator)
         case missingRightOperand(Operator)
         
+        // ExpressionRewriter Error
+        case expressionRewriterError
+        
         // Evaluation Errors
         case unknownFunction(String)
         case unknownVariable(String)
@@ -87,6 +90,9 @@ public func ==(lhs: MathParserError.Kind, rhs: MathParserError.Kind) -> Bool {
         case (.invalidFormat, .invalidFormat): return true
         case (.missingLeftOperand(let leftOp), .missingLeftOperand(let rightOp)): return leftOp == rightOp
         case (.missingRightOperand(let leftOp), .missingRightOperand(let rightOp)): return leftOp == rightOp
+        
+        // Expression Rewriting Error
+        case(.expressionRewriterError, .expressionRewriterError): return true
             
         // Evaluation Errors
         case (.unknownFunction(let leftString), .unknownFunction(let rightString)): return leftString == rightString
