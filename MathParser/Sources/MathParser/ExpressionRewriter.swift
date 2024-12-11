@@ -35,7 +35,11 @@ public struct ExpressionRewriter {
                 let rewritten = rewrite(tmp, usingRule: rule, substitutions: substitutions, evaluator: evaluator)
                 
                 do {
-                    _ = try evaluator.evaluate(rewritten)
+                    let rewrittenValue = try evaluator.evaluate(rewritten)
+                    if rewrittenValue.isNaN {
+                        NSLog("The result of evaluation in ExpressionRewriter is nan")
+                        return nil
+                    }
                 } catch {
                     NSLog("Error during evaluation in ExpressionRewriter: \(error)")
                     return nil
