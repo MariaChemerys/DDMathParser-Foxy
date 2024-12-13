@@ -101,7 +101,7 @@ extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         
-        guard arg1 >= 0, arg1 == _math.floor(arg1) else {
+        guard arg1 >= 0 else {
             throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
         }
         
