@@ -208,16 +208,33 @@ extension Function {
         return drand48() * range + lowerBound
     })
     
-    public static let log = Function(names: ["log", "log10"], evaluator: { state throws -> Double in
-        guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+    public static let log = Function(name: "log", evaluator: { state throws -> Double in
         
-        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let numberOfArguments = state.arguments.count
         
-        guard arg1 > 0 else {
-            throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+        switch numberOfArguments {
+        case 1:
+            let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+            guard arg1 > 0 else {
+                throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+            }
+            
+            return Darwin.log10(arg1)
+        case 2:
+            let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+            guard arg1 > 0, arg1 != 1 else {
+                throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+            }
+            
+            let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+            guard arg2 > 0 else {
+                throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+            }
+            
+            return Darwin.log(arg2) / Darwin.log(arg1)
+        default:
+            throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
         }
-        
-        return Darwin.log10(arg1)
     })
     
     public static let ln = Function(name: "ln", evaluator: { state throws -> Double in
