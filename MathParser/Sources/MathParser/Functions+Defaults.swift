@@ -8,6 +8,13 @@
 
 import Foundation
 
+// Unicode representations for nth root
+let superscriptN = "\u{207F}" // Unicode for superscript n
+let rootSymbol = "\u{221A}"   // Unicode for √
+
+// Combine into one visually coherent symbol
+let nthRootSymbol = superscriptN + rootSymbol
+
 extension Function {
     
     // MARK: - Angle mode helpers
@@ -181,7 +188,7 @@ extension Function {
 //        }
 //    })
     
-    public static let nthroot = Function(name: "ⁿ√", evaluator: { state throws -> Double in
+    public static let nthroot = Function(name: nthRootSymbol, evaluator: { state throws -> Double in
         
         let numberOfArguments = state.arguments.count
         
