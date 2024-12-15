@@ -181,7 +181,7 @@ extension Function {
 //        }
 //    })
     
-    public static let nthroot = Function(name: "√", evaluator: { state throws -> Double in
+    public static let nthroot = Function(name: "ⁿ√", evaluator: { state throws -> Double in
         
         let numberOfArguments = state.arguments.count
         
