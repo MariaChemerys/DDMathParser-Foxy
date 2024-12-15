@@ -8,12 +8,13 @@
 
 import Foundation
 
-// Unicode representations for nth root
-let superscriptN = "\u{207F}" // Unicode for superscript n
-let rootSymbol = "\u{221A}"   // Unicode for √
+// Define the components
+let n = "n" // You can replace this with any number or variable, like "3"
+let rootSymbol = "\u{221A}" // Unicode for √ (square root symbol)
+let combiningMark = "\u{20D0}" // Example: Combining Left Harpoon Above (can modify to other combining marks)
 
-// Combine into one visually coherent symbol
-let nthRootSymbol = superscriptN + rootSymbol
+// Combine characters into an nth root representation
+let nthRootSymbol = n + combiningMark + rootSymbol
 
 extension Function {
     
