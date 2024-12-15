@@ -141,8 +141,8 @@ extension Function {
     public static let sqrt = Function(name: "sqrt", evaluator: { state throws -> Double in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
-        let arg = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        guard arg >= 0 else {
+        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        guard arg1 >= 0 else {
             throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
         }
         
@@ -164,20 +164,50 @@ extension Function {
         }
     })
     
-    public static let nthroot = Function(name: "nthroot", evaluator: { state throws -> Double in
-        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+//    public static let nthroot = Function(name: "nthroot", evaluator: { state throws -> Double in
+//        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+//        
+//        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+//        let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+//        
+//        guard arg2 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
+//        
+//        if arg1 < 0 && arg2.truncatingRemainder(dividingBy: 2) == 1 {
+//            // for negative numbers with an odd root, the result will be negative
+//            let root = Darwin.pow(-arg1, 1/arg2)
+//            return -root
+//        } else {
+//            return Darwin.pow(arg1, 1/arg2)
+//        }
+//    })
+    
+    public static let nthroot = Function(name: "√", evaluator: { state throws -> Double in
         
-        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        let numberOfArguments = state.arguments.count
         
-        guard arg2 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-        
-        if arg1 < 0 && arg2.truncatingRemainder(dividingBy: 2) == 1 {
-            // for negative numbers with an odd root, the result will be negative
-            let root = Darwin.pow(-arg1, 1/arg2)
-            return -root
-        } else {
-            return Darwin.pow(arg1, 1/arg2)
+        switch numberOfArguments {
+        case 1:
+            let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+            guard arg1 >= 0 else {
+                throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
+            }
+            
+            return Darwin.sqrt(arg1)
+        case 2:
+            let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+            let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+            
+            guard arg1 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
+            
+            if arg2 < 0 && arg1.truncatingRemainder(dividingBy: 2) == 1 {
+                // for negative numbers with an odd root, the result will be negative
+                let root = Darwin.pow(-arg2, 1/arg1)
+                return -root
+            } else {
+                return Darwin.pow(arg2, 1/arg1)
+            }
+        default:
+            throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
         }
     })
     
