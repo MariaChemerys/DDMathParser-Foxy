@@ -8,14 +8,6 @@
 
 import Foundation
 
-// Define the components
-let n = "n" // You can replace this with any number or variable, like "3"
-let rootSymbol = "\u{221A}" // Unicode for √ (square root symbol)
-let combiningMark = "\u{20D0}" // Example: Combining Left Harpoon Above (can modify to other combining marks)
-
-// Combine characters into an nth root representation
-let nthRootSymbol = n + combiningMark + rootSymbol
-
 extension Function {
     
     // MARK: - Angle mode helpers
@@ -172,50 +164,20 @@ extension Function {
         }
     })
     
-//    public static let nthroot = Function(name: "nthroot", evaluator: { state throws -> Double in
-//        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
-//        
-//        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-//        let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-//        
-//        guard arg2 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-//        
-//        if arg1 < 0 && arg2.truncatingRemainder(dividingBy: 2) == 1 {
-//            // for negative numbers with an odd root, the result will be negative
-//            let root = Darwin.pow(-arg1, 1/arg2)
-//            return -root
-//        } else {
-//            return Darwin.pow(arg1, 1/arg2)
-//        }
-//    })
-    
-    public static let nthroot = Function(name: nthRootSymbol, evaluator: { state throws -> Double in
+    public static let nthroot = Function(name: "nthroot", evaluator: { state throws -> Double in
+        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
-        let numberOfArguments = state.arguments.count
+        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
         
-        switch numberOfArguments {
-        case 1:
-            let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-            guard arg1 >= 0 else {
-                throw MathParserError(kind: .argumentOutOfRange, range: state.expressionRange)
-            }
-            
-            return Darwin.sqrt(arg1)
-        case 2:
-            let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-            let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-            
-            guard arg1 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-            
-            if arg2 < 0 && arg1.truncatingRemainder(dividingBy: 2) == 1 {
-                // for negative numbers with an odd root, the result will be negative
-                let root = Darwin.pow(-arg2, 1/arg1)
-                return -root
-            } else {
-                return Darwin.pow(arg2, 1/arg1)
-            }
-        default:
-            throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
+        guard arg1 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
+        
+        if arg2 < 0 && arg1.truncatingRemainder(dividingBy: 2) == 1 {
+            // for negative numbers with an odd root, the result will be negative
+            let root = Darwin.pow(-arg2, 1/arg1)
+            return -root
+        } else {
+            return Darwin.pow(arg2, 1/arg1)
         }
     })
     
