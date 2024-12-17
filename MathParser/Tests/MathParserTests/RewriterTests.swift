@@ -15,7 +15,7 @@ func TestRewrite(_ original: String, expected: String, substitutions: Substituti
     
     guard let expectedE = XCTAssertNoThrows(try Expression(string: expected), file: file, line: line) else { return }
     
-    let rewritten = rewriter.rewriteExpression(originalE, substitutions: substitutions, evaluator: evaluator)
+    let rewritten = try? rewriter.rewriteExpression(originalE, substitutions: substitutions, evaluator: evaluator)
     
     XCTAssertEqual(rewritten, expectedE, file: file, line: line)
     

@@ -23,7 +23,7 @@ public struct ExpressionRewriter {
         rules.append(rule)
     }
     
-    public func rewriteExpression(_ expression: Expression, substitutions: Substitutions = [:], evaluator: Evaluator = Evaluator.default) -> Expression? {
+    public func rewriteExpression(_ expression: Expression, substitutions: Substitutions = [:], evaluator: Evaluator = Evaluator.default) throws -> Expression {
         
         var tmp = expression
         var iterationCount: UInt = 0
@@ -37,12 +37,14 @@ public struct ExpressionRewriter {
                 do {
                     let rewrittenValue = try evaluator.evaluate(rewritten)
                     if rewrittenValue.isNaN {
-                        NSLog("The result of evaluation in ExpressionRewriter is nan")
-                        return nil
+                        NSLog("The result of evaluation in MathParser rewriteExpression() func is nan")
+//                        return nil
+                        throw MathParserError(kind: .invalidArguments, range: expression.range)
                     }
                 } catch {
-                    NSLog("Error during evaluation in ExpressionRewriter: \(error)")
-                    return nil
+                    NSLog("Error during evaluation in MathParser rewriteExpression() func: \(error)")
+//                    return nil
+                    throw error
                 }
                 
                 if rewritten != tmp {

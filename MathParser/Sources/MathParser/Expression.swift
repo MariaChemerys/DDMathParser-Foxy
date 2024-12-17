@@ -90,8 +90,15 @@ public final class Expression {
         }
     }
     
-    public func rewrite(_ substitutions: Substitutions = [:], rewriter: ExpressionRewriter = .default, evaluator: Evaluator = .default) -> Expression? {
-        return rewriter.rewriteExpression(self, substitutions: substitutions, evaluator: evaluator)
+    public func rewrite(_ substitutions: Substitutions = [:], rewriter: ExpressionRewriter = .default, evaluator: Evaluator = .default) throws -> Expression {
+        do {
+            let rewrittenExpression = try rewriter.rewriteExpression(self, substitutions: substitutions, evaluator: evaluator)
+            return rewrittenExpression
+        } catch {
+            NSLog("Error during evaluation in MathParser rewrite() func: \(error)")
+            throw error
+        }
+//        return rewriter.rewriteExpression(self, substitutions: substitutions, evaluator: evaluator)
     }
 }
 

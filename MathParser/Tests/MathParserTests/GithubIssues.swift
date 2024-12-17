@@ -230,7 +230,7 @@ class GithubIssues: XCTestCase {
         guard let original = XCTAssertNoThrows(try Expression(string: "sqrt((99**$foo)**2)")) else { return }
         guard let expected = XCTAssertNoThrows(try Expression(string: "abs(99**$foo)")) else { return }
         
-        let rewritten = ExpressionRewriter.default.rewriteExpression(original)
+        let rewritten = try? ExpressionRewriter.default.rewriteExpression(original)
         XCTAssertEqual(rewritten, expected)
     }
     
